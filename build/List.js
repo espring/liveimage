@@ -175,6 +175,19 @@ class List extends _react.Component {
     return _react2.default.createElement(EditLayer, { scale: this.state.scale });
   }
 
+  isSelectedListItem(minLineIndex, maxLineIndex, boxId) {
+    const { selectedBox } = this.state;
+    if (selectedBox) {
+      const { dPix2cssRatio } = this.context;
+      let find = this.state.measureBoxs.find(thisBox => thisBox.id === selectedBox);
+      if (find && find.lineIndex >= minLineIndex && find.lineIndex < maxLineIndex) {
+        // top和right是带了缩放dPix2cssRatio.
+        return { top: find.top * dPix2cssRatio, right: find.right };
+      }
+    }
+    return null;
+  }
+
   renderListItems() {
     let {
       data,
@@ -235,7 +248,18 @@ class List extends _react.Component {
         let dataIdx = topItemIdx + i;
         // 考虑store数据被截断的case
         let itemData = data.getDataAt(dataIdx) || { id: Math.random() };
-        items.push(this.renderListItem(itemData, itemStyle));
+
+        const pos = this.isSelectedListItem(itemData.lineIndex, itemData.lineIndex + itemData.height);
+        if (pos) {
+          items.push(this.renderListItem(itemData, _extends({}, itemStyle, {
+            transform: `scale(2) translate(-30%,0%)`,
+            transformOrigin: `right ${100 * pos.top / itemData.width}% 0px`,
+            border: '1px solid rgb(28, 55, 105)',
+            boxShadow: '0px 0px 20px 0px rgb(10,10,10)',
+            zIndex: 100 })));
+        } else {
+          items.push(this.renderListItem(itemData, itemStyle));
+        }
         this._listItemData.push(itemData);
       }
     }
