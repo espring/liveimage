@@ -252,7 +252,7 @@ class List extends _react.Component {
         const pos = this.isSelectedListItem(itemData.lineIndex, itemData.lineIndex + itemData.height);
         if (pos) {
           items.push(this.renderListItem(itemData, _extends({}, itemStyle, {
-            transform: `scale(2) translate(-30%,0%)`,
+            transform: `scale(2) translate(-12%,0%)`,
             transformOrigin: `right ${100 * pos.top / itemData.width}% 0px`,
             border: '1px solid rgb(28, 55, 105)',
             boxShadow: '0px 0px 20px 0px rgb(10,10,10)',
